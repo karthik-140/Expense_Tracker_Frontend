@@ -8,7 +8,7 @@ const isPremiumUser = decodedToken?.isPremiumUser
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: { isLoggedIn: false, isPremiumUser: isPremiumUser },
+  initialState: { isLoggedIn: !!decodedToken, isPremiumUser: isPremiumUser },
   reducers: {
     setPremiumUser(state, action) {
       state.isPremiumUser = action.payload

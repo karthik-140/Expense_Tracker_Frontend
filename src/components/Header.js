@@ -16,10 +16,10 @@ const Header = () => {
   // const showLogout = location.pathname !== '/'
 
   const logoutHandler = () => {
-    // window.location.href = '/'      // temperory fix
+    window.location.href = '/'      // temperory fix
     localStorage.removeItem('token')
-    dispatch(userActions.setUserLogin(false))
-    navigate('/')
+    // dispatch(userActions.setUserLogin(false))
+    // navigate('/')
   }
 
   const redirectToRazorpayHandler = async () => {
@@ -56,12 +56,12 @@ const Header = () => {
   }
 
   return (
-    <header className="flex justify-center py-4 text-center text-white font-bold text-xl bg-blue-600">
-      <nav className='align-center'>
+    <header className={`font-medium flex ${isLoggedIn ? 'justify-between' : 'justify-center'} px-2 sm:px-5 py-4 text-center text-white md:font-bold text-xl bg-blue-600`}>
+      <div>
         Expense Tracker
-      </nav>
+      </div>
       {isLoggedIn &&
-        <div className='text-white flex gap-4 absolute right-8'>
+        <div className='text-white flex gap-2 sm:gap-4'>
           {isPremiumUser
             ?
             <button
