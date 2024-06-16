@@ -50,11 +50,13 @@ const Signup = () => {
   const onSubmit = async (data) => {
     if (login) {
       const loginResponse = await loginUser(data)
-      const token = loginResponse?.data?.token
-      localStorage.setItem('token', token)
-      const isPremiumUser = loginResponse?.data?.response?.isPremiumUser === true
-      dispatch(userActions.setUserLogin(true))
-      dispatch(userActions.setPremiumUser(isPremiumUser))
+      if (loginResponse.data) {
+        const token = loginResponse?.data?.token
+        localStorage.setItem('token', token)
+        const isPremiumUser = loginResponse?.data?.response?.isPremiumUser === true
+        dispatch(userActions.setUserLogin(true))
+        dispatch(userActions.setPremiumUser(isPremiumUser))
+      }
     } else {
       await signupUser(data)
       setLogin(true)
