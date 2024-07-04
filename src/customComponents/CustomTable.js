@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table, TableHead, TableBody, TableCell, TableRow, Button, TableContainer, Typography, TablePagination } from "@mui/material"
 import { useSelector } from "react-redux";
 
 import CustomPaper from "./CustomPaper";
 
-const CustomTable = ({ tableLabel, headers, rows, renderRows, showDownload, downloadHandler }) => {
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
+const CustomTable = ({
+  tableLabel,
+  headers,
+  rows,
+  renderRows,
+  showDownload,
+  downloadHandler,
+  rowsPerPage,
+  page,
+  handleChangePage,
+  handleChangeRowsPerPage,
+  count
+}) => {
+
   const { isPremiumUser } = useSelector((state) => state.user)
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value)
-    setPage(0)
-  }
 
   return (
     <CustomPaper className='flex flex-col gap-6'>
@@ -92,7 +94,7 @@ const CustomTable = ({ tableLabel, headers, rows, renderRows, showDownload, down
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, 100]}
         component="div"
-        count={rows?.length || 0}
+        count={count || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

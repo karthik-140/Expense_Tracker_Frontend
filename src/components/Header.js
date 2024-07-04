@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -14,6 +15,13 @@ const Header = () => {
   const [updateTransactionStatus] = useUpdateTransactionStatusMutation()
 
   // const showLogout = location.pathname !== '/'
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      navigate('/expense')
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const logoutHandler = () => {
     window.location.href = '/'      // temperory fix

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Button } from "@mui/material"
 import { useNavigate } from 'react-router-dom'
 
@@ -11,8 +12,20 @@ const headers = [
 ]
 
 const Leaderboard = () => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
   const navigate = useNavigate()
+
   const { data: leaderboard = [] } = useGetLeaderboardQuery()
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
 
   const leaderboardCloseHandler = () => {
     navigate('/expense')
@@ -36,6 +49,11 @@ const Leaderboard = () => {
         headers={headers}
         rows={leaderboard}
         renderRows={renderCell}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        count={leaderboard.length}
       />
       <div className="flex justify-center mb-20">
         <Button variant="outlined" onClick={leaderboardCloseHandler}>

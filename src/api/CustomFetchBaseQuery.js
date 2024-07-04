@@ -3,7 +3,9 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query"
 const getToken = () => localStorage.getItem('token')
 
 const CustomFetchBaseQuery = fetchBaseQuery({
-  baseUrl: 'http://35.154.97.74:3001/',
+  baseUrl: 
+  // 'http://localhost:3001',
+  'https://expense-tracker-backend-lemon.vercel.app/',
   prepareHeaders: (headers, { endpoint }) => {
 
     const excludedEndpoints = ['signup', 'login']

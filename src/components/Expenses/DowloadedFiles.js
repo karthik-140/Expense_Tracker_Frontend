@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Link } from "@mui/material"
 import { format } from 'date-fns'
 
@@ -12,7 +13,18 @@ const headers = [
 ]
 
 const DowloadedFiles = () => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
   const { data: downloadedFiles = [], isLoading } = useGetDownloadedFilesQuery()
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
 
   if (downloadedFiles.length === 0) {
     return
@@ -37,6 +49,11 @@ const DowloadedFiles = () => {
         headers={headers}
         rows={downloadedFiles}
         renderRows={renderCell}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        count={downloadedFiles.length}
       />
     </>
   )
