@@ -17,10 +17,10 @@ const Header = () => {
   // const showLogout = location.pathname !== '/'
 
   useEffect(() => {
-    if(isLoggedIn) {
+    if (isLoggedIn) {
       navigate('/expense')
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const logoutHandler = () => {
@@ -64,7 +64,10 @@ const Header = () => {
   }
 
   return (
-    <header className={`font-medium flex ${isLoggedIn ? 'justify-between' : 'justify-center'} px-2 sm:px-5 py-4 text-center text-white md:font-bold text-xl bg-blue-600`}>
+    <header
+      sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }}
+      className={`text-base md:text-lg lg:text-xl font-medium flex ${isLoggedIn ? 'justify-between' : 'justify-center'} px-2 sm:px-5 py-4 text-center text-white md:font-bold text-xl bg-blue-600`}
+    >
       <div>
         Expense Tracker
       </div>

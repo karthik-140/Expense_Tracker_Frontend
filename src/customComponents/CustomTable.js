@@ -1,5 +1,16 @@
 import React from "react";
-import { Table, TableHead, TableBody, TableCell, TableRow, Button, TableContainer, Typography, TablePagination } from "@mui/material"
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableRow,
+  Button,
+  TableContainer,
+  Typography,
+  TablePagination,
+  Paper
+} from "@mui/material";
 import { useSelector } from "react-redux";
 
 import CustomPaper from "./CustomPaper";
@@ -39,23 +50,20 @@ const CustomTable = ({
             className="self-end"
             // disabled={!isPremiumUser}
             onClick={downloadHandler}
+            sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }}
           >
             Download
           </Button>}
       </div>
-      <TableContainer className="flex flex-col justify-center gap-8">
-        <Table
-          stickyHeader
-          aria-label="sticky table"
-          className="border table-auto"
-        >
-          <TableHead className="uppercase" >
+      <TableContainer component={Paper} sx={{ maxWidth: '100vw', overflowX: 'auto' }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
             <TableRow>
               {headers.map((header, idx) => (
                 <TableCell
                   key={`header-${idx}`}
                   align="center"
-                  style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold' }}
+                  sx={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold', fontSize: { xs: 12, sm: 14, md: 16 } }}
                 >
                   {header.label}
                 </TableCell>
@@ -71,15 +79,14 @@ const CustomTable = ({
                       {header.label === 'S.no' ? (
                         <TableCell
                           align="center"
-                          className="capitalize"
+                          sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }}
                         >
                           {page * rowsPerPage + rowIndex + 1}
                         </TableCell>
                       ) : (
                         <TableCell
                           align="center"
-                          className="capitalize"
-                          key={cellIndex}
+                          sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }}
                         >
                           {renderRows(row, header)}
                         </TableCell>
@@ -99,7 +106,7 @@ const CustomTable = ({
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        className="px-8 py-4"
+        sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }}
       />
     </CustomPaper>
   )
