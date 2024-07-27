@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { useDeleteExpenseMutation, useLazyDownloadExpensesQuery, useGetExpensesQuery } from "../../api/ExpenseAPI"
+import {
+  useDeleteExpenseMutation,
+  // useLazyDownloadExpensesQuery,
+  useGetExpensesQuery
+} from "../../api/ExpenseAPI"
 import CustomTable from "../../customComponents/CustomTable";
 import Toast from "../../customComponents/Toast";
 import CustomLoading from '../../customComponents/CustomLoading';
@@ -22,7 +26,7 @@ const ExpenseTable = () => {
 
   const { data: responseData, isLoading: isExpensesLoading, isFetching: isExpenseFetching } = useGetExpensesQuery({ page: currentPage, limit: rowsPerExPage })
   const [deleteExpense, { isLoading: isDeleteExpenseLoading, isError: isDeleteError }] = useDeleteExpenseMutation()
-  const [downloadExpenses, { isLoading: isDownloadExpensesLoading, isError: isDownloadExpensesError }] = useLazyDownloadExpensesQuery()
+  // const [downloadExpenses, { isLoading: isDownloadExpensesLoading, isError: isDownloadExpensesError }] = useLazyDownloadExpensesQuery()
 
   useEffect(() => {
     if (responseData) {
@@ -34,7 +38,7 @@ const ExpenseTable = () => {
       )
       setTotalExpenses([...existingExpenses, ...uniqueNewExpenses])
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [responseData])
 
   const handleChangePage = async (event, newPage) => {
@@ -62,17 +66,34 @@ const ExpenseTable = () => {
   }
 
   const downloadExpensesHandler = async () => {
-    try {
-      const response = await downloadExpenses()
-      if (response.isSuccess) {
-        let a = document.createElement('a')
-        a.href = response.data.fileUrl
-        a.download = 'myexpenses.csv'
-        a.click()
-      }
-    } catch (err) {
-      console.log(err)
-    }
+    // this code used for storing and fetching from AWS S3 Bucket 
+    // try {
+    //   const response = await downloadExpenses()
+    //   if (response.isSuccess) {
+    //     let a = document.createElement('a')
+    //     a.href = response.data.fileUrl
+    //     a.download = 'myexpenses.csv'
+    //     a.click()
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    // }
+    const csvHeader = 'S.no,Amount,Description,Category\n'
+    const csvRows = totalExpenses.map((expense, idx) =>
+      `${idx + 1},${expense.amount},${expense.description},${expense.category}`
+    )
+    const csvContent = csvHeader + csvRows.join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+
+    link.setAttribute('href', url)
+    link.setAttribute('download', `${new Date().toISOString()}/expenses.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   const renderCell = (row, header) => {
@@ -97,8 +118,15 @@ const ExpenseTable = () => {
 
   return (
     <>
-      {(isExpensesLoading || isExpenseFetching || isDeleteExpenseLoading || isDownloadExpensesLoading) && <CustomLoading />}
-      {(isDeleteError || isDownloadExpensesError)
+      {(isExpensesLoading
+        || isExpenseFetching
+        || isDeleteExpenseLoading
+        // || isDownloadExpensesLoading
+      ) && <CustomLoading />}
+      {(
+        isDeleteError
+        // || isDownloadExpensesError
+      )
         &&
         <Toast
           message={'Failed!!'}
